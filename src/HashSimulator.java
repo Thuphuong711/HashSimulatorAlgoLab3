@@ -3,6 +3,7 @@
  * StudentID: A01373420
  */
 
+import java.util.function.BiFunction;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
@@ -28,9 +29,9 @@ public class HashSimulator {
         int[] array = new int[6];
 
         // three arrays to store the collisions and probes of three hash functions
-        int[] resultH1 = runH1(size,text);
-        int[] resultH2 = runH2(size,text);
-        int[] resultH3 = runH3(size,text);
+        int[] resultH1 = runHashFunction(size,text,this::H1);
+        int[] resultH2 = runHashFunction(size,text,this::H2);
+        int[] resultH3 = runHashFunction(size,text,this::H3);
 
         // putting the result of each hash functions into the array
         array[0] = resultH1[0];
@@ -40,6 +41,9 @@ public class HashSimulator {
         array[4] = resultH3[0];
         array[5] = resultH3[1];
 
+        for(int i = 0; i< array.length; i++){
+            System.out.print(array[i] + " ");
+        }
         return array;
     }
 
@@ -101,22 +105,14 @@ public class HashSimulator {
         return abs((int)(hashValue % HTsize));
     }
 
-
-    /**
-     * function runH1 to calculate the collisions and probes when
-     * the String array of name is hashed by H1 function
-     * @param size - an int, the size of the hash table to be used
-     * @param text - an array of strings, the key values to be hashed
-     * @return array of collision and probes
-     */
-    public int[] runH1(int size, String[] text){
-        int[] H1Result = new int[2];
+    public int[] runHashFunction(int size, String[] text, BiFunction<String, Integer, Integer> hashFunction){
+        int[] result = new int[2];
         int probeH1 = 0;
         int collisionH1 = 0;
         String[] hashTableH1 = new String[size];
 
         for (String name : text) {
-            int hashCode = H1(name, size);
+            int hashCode = hashFunction.apply(name, size);
             if (hashTableH1[hashCode] == null) {
                 hashTableH1[hashCode] = name;
             } else {
@@ -132,7 +128,6 @@ public class HashSimulator {
                     hashTableH1[j] = name;
                 }
                 if (j == size) { // wrap around
-                    System.out.println("enter j == size ");
                     j = 0;
                     while (hashTableH1[j] != null) {
                         probeH1++;
@@ -142,96 +137,8 @@ public class HashSimulator {
                 }
             }
         }
-        H1Result[0] = collisionH1;
-        H1Result[1] = probeH1;
-        return H1Result;
+        result[0] = collisionH1;
+        result[1] = probeH1;
+        return result;
     }
-
-
-    /**
-     * function runH2 to calculate the collisions and probes when
-     * the String array of name is hashed by H2 function
-     * @param size - an int, the size of the hash table to be used
-     * @param text - an array of strings, the key values to be hashed
-     * @return array of collision and probes
-     */
-    public int[] runH2(int size, String[] text){
-        int[] H2Result = new int[2];
-        int probeH2 = 0;
-        int collisionH2 = 0;
-        String[] hashTableH2 = new String[size];
-
-        for (String name : text) {
-            int hashCode = H2(name, size);
-            if (hashTableH2[hashCode] == null) {
-                hashTableH2[hashCode] = name;
-            } else {
-                probeH2++;
-                collisionH2++;
-                int j = hashCode + 1;
-                while (j < size && hashTableH2[j] != null) {
-                    probeH2++;
-                    j++;
-                }
-                if (j < size && hashTableH2[j] == null) {
-                    hashTableH2[j] = name;
-                }
-                if (j == size) { // wrap around
-                    j = 0;
-                    while (hashTableH2[j] != null) {
-                        probeH2++;
-                        j++;
-                    }
-                    hashTableH2[j] = name;
-
-                }
-            }
-        }
-        H2Result[0] = collisionH2;
-        H2Result[1] = probeH2;
-        return H2Result;
-    }
-
-    /**
-     * function runH3 to calculate the collisions and probes when
-     * the String array of name is hashed by H3 function
-     * @param size - an int, the size of the hash table to be used
-     * @param text - an array of strings, the key values to be hashed
-     * @return array of collision and probes
-     */
-    public int[] runH3(int size, String[] text){
-        int[] H3Result = new int[2];
-        int probeH3 = 0;
-        int collisionH3 = 0;
-        String[] hashTableH1 = new String[size];
-        for (String name : text) {
-            int hashCode = H3(name, size);
-            if (hashTableH1[hashCode] == null) {
-                hashTableH1[hashCode] = name;
-            } else {
-                probeH3++;
-                collisionH3++;
-                int j = hashCode + 1;
-                while (j < size && hashTableH1[j] != null) {
-                    probeH3++;
-                    j++;
-                }
-                if (j < size && hashTableH1[j] == null) {
-                    hashTableH1[j] = name;
-                }
-                if (j == size) { // wrap around
-                    j = 0;
-                    while (hashTableH1[j] != null) {
-                        probeH3++;
-                        j++;
-                    }
-                    hashTableH1[j] = name;
-                }
-            }
-        }
-        H3Result[0] = collisionH3;
-        H3Result[1] = probeH3;
-        return H3Result;
-    }
-
 }

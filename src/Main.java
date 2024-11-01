@@ -7,7 +7,7 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        File myFile = new File("C:\\Users\\thuph\\Downloads\\5649names.txt");
+        File myFile = new File("C:\\Users\\thuph\\Downloads\\779names.txt");
         Scanner myReader = new Scanner(myFile);
         ArrayList arrayList = new ArrayList();
         while(myReader.hasNextLine()) {
@@ -18,6 +18,6 @@ public class Main {
         String[] names = new String[size];
         names = (String[]) arrayList.toArray(names);
         HashSimulator simulator = new HashSimulator();
-        simulator.runHashSimulator(names, 564900);
+        simulator.runHashSimulator(names, 77900);
     }
 }
