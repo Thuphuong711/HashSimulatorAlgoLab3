@@ -24,7 +24,7 @@ public class HashSimulator {
      * results[4] is the # of collisions that occur when hashing with H3()
      * results[5] is the # of probes that occur when hashing with H3()
      */
-    public int[] runHashSimulator (String[] text, int size){
+    public int[] runHashSimulation (String[] text, int size){
         // int array to store the results of the hash simulators
         int[] array = new int[6];
 

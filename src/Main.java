@@ -18,6 +18,6 @@ public class Main {
         String[] names = new String[size];
         names = (String[]) arrayList.toArray(names);
         HashSimulator simulator = new HashSimulator();
-        simulator.runHashSimulator(names, 77900);
+        simulator.runHashSimulation(names, 77900);
     }
 }
