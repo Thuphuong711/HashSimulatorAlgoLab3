@@ -33,6 +33,7 @@ public class HashSimulator {
         int[] resultH2 = runHashFunction(size,text,this::H2);
         int[] resultH3 = runHashFunction(size,text,this::H3);
 
+
         // putting the result of each hash functions into the array
         array[0] = resultH1[0];
         array[1] = resultH1[1];
@@ -41,9 +42,6 @@ public class HashSimulator {
         array[4] = resultH3[0];
         array[5] = resultH3[1];
 
-        for(int i = 0; i< array.length; i++){
-            System.out.print(array[i] + " ");
-        }
         return array;
     }
 
@@ -105,40 +103,48 @@ public class HashSimulator {
         return abs((int)(hashValue % HTsize));
     }
 
+    /**
+     *
+     * @param size - an int, the size of the hash table to be used
+     * @param text - an array of strings, the key values to be hashed
+     * @param hashFunction - a Bifunctional Interface which takes String and Integer as param and return an Integer
+     *                     this function is H1, H2, H3 which will give the hash code of the name param passed in.
+     * @return an array of collision and probes
+     */
     public int[] runHashFunction(int size, String[] text, BiFunction<String, Integer, Integer> hashFunction){
         int[] result = new int[2];
-        int probeH1 = 0;
-        int collisionH1 = 0;
-        String[] hashTableH1 = new String[size];
+        int probe = 0;
+        int collision = 0;
+        String[] hashTable = new String[size];
 
         for (String name : text) {
             int hashCode = hashFunction.apply(name, size);
-            if (hashTableH1[hashCode] == null) {
-                hashTableH1[hashCode] = name;
+            if (hashTable[hashCode] == null) {
+                hashTable[hashCode] = name;
             } else {
                 // collision and probe occur
-                probeH1++;
-                collisionH1++;
+                probe++;
+                collision++;
                 int j = hashCode + 1;
-                while (j < size && hashTableH1[j] != null) {
-                    probeH1++;
+                while (j < size && hashTable[j] != null) {
+                    probe++;
                     j++;
                 }
-                if (j < size && hashTableH1[j] == null) {
-                    hashTableH1[j] = name;
+                if (j < size && hashTable[j] == null) {
+                    hashTable[j] = name;
                 }
                 if (j == size) { // wrap around
                     j = 0;
-                    while (hashTableH1[j] != null) {
-                        probeH1++;
+                    while (hashTable[j] != null) {
+                        probe++;
                         j++;
                     }
-                    hashTableH1[j] = name;
+                    hashTable[j] = name;
                 }
             }
         }
-        result[0] = collisionH1;
-        result[1] = probeH1;
+        result[0] = collision;
+        result[1] = probe;
         return result;
     }
 }
